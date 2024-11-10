@@ -619,7 +619,7 @@
             function getQuery(query){
                 let i = new URLSearchParams(window.location.search);
 
-                return i.get(query);
+                return i.get(query) != '' ? i.get(query) : "Yang Terhormat";
             }
 
             function isMobile() {
@@ -759,7 +759,10 @@
                     }, 'json')
                 });
 
-                $("#guestName").text(getQuery('name') || getQuery('name') != "" ? getQuery('name') : 'Yang Terhormat');
+                $("#guestName").text(getQuery('name') ?? "Yang Terhormat");
+                $('input[name="name"]').val(getQuery('name') ?? '');
+                console.log(getQuery('name'));
+                
             });
         </script>
 
