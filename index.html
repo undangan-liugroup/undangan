@@ -542,7 +542,7 @@
                                                         </div>
                                                         <div class="text-left">
                                                             <div class="mt-1">
-                                                                <textarea placeholder="Berikan Ucapan &amp; Doa" required name="body" rows="8" class="p-2 rounded-md text-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 border border-color-one-opacity"></textarea>
+                                                                <textarea placeholder="Berikan Ucapan &amp; Doa" required name="messages" rows="8" class="p-2 rounded-md text-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 border border-color-one-opacity"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -701,29 +701,29 @@
                     $("#modalMessage").fadeIn()
                 });
                 $("#formSendMessage").submit(function(e) {
-                    $("#formSendMessage").find("button[type=submit]").css("background-color", "#e9e4de");
-                    $("#formSendMessage").find("button[type=submit]").attr("disabled", "disabled");
                     e.preventDefault();
-                    $.post("https://api.goinvite.id/api/public/message/6l0cbecpi1Uete4Q", $(this).serialize(), function(data) {
-                        if (!data.error) {
-                            $("#formSendMessage").find("button[type=submit]").css("background-color", "#C2AE92");
-                            $("#formSendMessage").find("button[type=submit]").removeAttr("disabled");
-                            Toastify({
-                                text: "Berhasil terkirim",
-                                duration: 3000,
-                                gravity: "top",
-                                position: "right",
-                                style: {
-                                    background: "rgb(15 15 15)",
-                                    color: "#fff",
-                                    fontSize: "12px"
-                                }
-                            }).showToast();
-                            getMessages();
-                            $("#formSendMessage").trigger("reset");
-                            $("#modalMessage").fadeOut()
+
+                    const data = {
+                        name: $('input[name="name"]').val(),
+                        guest: $('input[name="guest"]').val(),
+                        presence: $('input[name="presence"]').val(),
+                        messages: $('input[name="messages"]').val()
+                    };
+
+                    // Kirim data ke Google Apps Script
+                    $.ajax({
+                        url: "https://script.google.com/macros/s/AKfycbyL0BUcxIMoOJyfuZxXX7nXvzgaedk8rSGzCxxR5yUlgpFT6Vfq90MHy-5EKsh01v3QRQ/exec", // Ganti dengan URL Google Apps Script
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        success: function () {
+                            alert("Data berhasil dikirim!");
+                            $('#formSendMessage')[0].reset(); // Reset form setelah submit
+                        },
+                        error: function () {
+                            alert("Gagal mengirim data");
                         }
-                    }, 'json')
+                    });
                 });
                 $("#sendRsvp").click(function() {
                     $("#modalRsvp").fadeIn()
@@ -755,6 +755,7 @@
                 })
             });
         </script>
+
         <script>
             var swiper = new Swiper(".mySwiper",{
                 spaceBetween: 10,
