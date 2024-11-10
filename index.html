@@ -535,8 +535,8 @@
                                                             <div class="mt-1">
                                                                 <select required name="presence" class="p-2 rounded-md w-full block focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border border-color-one-opacity">
                                                                     <option value="dont_know">Konfirmasi Kehadiran Anda</option>
-                                                                    <option value="presence">Ya, Saya akan hadir</option>
-                                                                    <option value="not_presence">Tidak</option>
+                                                                    <option value="Ya">Ya, Saya akan hadir</option>
+                                                                    <option value="Tidak">Tidak</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -705,23 +705,23 @@
 
                     const data = {
                         name: $('input[name="name"]').val(),
-                        guest: $('input[name="guest"]').val(),
-                        presence: $('input[name="presence"]').val(),
-                        messages: $('input[name="messages"]').val()
+                        guest: $('select[name="guest"]').val(),
+                        presence: $('select[name="presence"]').val(),
+                        messages: $('textarea[name="messages"]').val(),
+                        callback: "?" // JSONP callback parameter
                     };
 
-                    // Kirim data ke Google Apps Script
                     $.ajax({
-                        url: "https://script.google.com/macros/s/AKfycbyL0BUcxIMoOJyfuZxXX7nXvzgaedk8rSGzCxxR5yUlgpFT6Vfq90MHy-5EKsh01v3QRQ/exec", // Ganti dengan URL Google Apps Script
-                        method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(data),
+                        url: "https://script.google.com/macros/s/AKfycbzvBNtHkXPjDBZuKkrzlHDUxjQslRZ1e2_U-93Sv4s9qcrqUAnpJ9iJR-ghK6uQzYQGcw/exec", // Ganti dengan URL Apps Script kamu
+                        data: data,
+                        dataType: "jsonp", // JSONP untuk bypass CORS
                         success: function () {
                             alert("Data berhasil dikirim!");
-                            $('#formSendMessage')[0].reset(); // Reset form setelah submit
+                            $('#formSendMessage')[0].reset();
                         },
-                        error: function () {
-                            alert("Gagal mengirim data");
+                        error: function (e) {
+                            console.log(e);
+                            
                         }
                     });
                 });
