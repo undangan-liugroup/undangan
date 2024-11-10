@@ -205,7 +205,7 @@
                         </div>
                         <div class="text-center pt-8 ">
                             <p class="font-four text-sm">Kepada Bapak/Ibu/Saudara/i</p>
-                            <p class="font-four pt-2 text-2xl font-bold">Yang Terhormat</p>
+                            <p id="guestName" class="font-four pt-2 text-2xl font-bold"></p>
                             <p class="font-four mt-2" style="font-size: 10px">Kami mengundang Anda untuk hadir di acara Perayaan HUT PT.Liu yang ke-16.</p>
                             <button type="button" class="font-three m-auto flex py-3 px-8 rounded-full mt-6" style="background:#b76f21">
                                 <ion-icon class="text-white w-5 h-5 mr-2" name="mail-open-outline"></ion-icon>
@@ -616,6 +616,12 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
         <script>
+            function getQuery(query){
+                let i = new URLSearchParams(window.location.search);
+
+                return i.get(query);
+            }
+
             function isMobile() {
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             }
@@ -751,7 +757,9 @@
                             $("#modalRsvp").fadeOut()
                         }
                     }, 'json')
-                })
+                });
+
+                $("#guestName").text(getQuery('name') || getQuery('name') != "" ? getQuery('name') : 'Yang Terhormat');
             });
         </script>
 
